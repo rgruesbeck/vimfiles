@@ -242,15 +242,6 @@ function! s:Median(nums)
     endif
 endfunction
 
-"nerdtree settings
-let g:NERDTreeMouseMode = 2
-let g:NERDTreeWinSize = 40
-
-"explorer mappings
-nnoremap <f1> :BufExplorer<cr>
-nnoremap <f2> :NERDTreeToggle<cr>
-nnoremap <f3> :TagbarToggle<cr>
-
 "source project specific config files
 runtime! projects/**/*.vim
 
@@ -306,3 +297,5 @@ autocmd BufReadPost fugitive://*
   \   nnoremap <buffer> .. :edit %:h<CR> |
   \ endif
 
+"setup ctrlp
+set runtimepath^=~/.vim/bundle/ctrlp.vim
