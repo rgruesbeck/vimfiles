@@ -1,0 +1,20 @@
+snippet f "function"
+function ${1:name} () {
+  ${2://todo}
+}
+endsnippet
+
+snippet as "assert"
+assertEquals ${1:this} ${2:that}
+endsnippet
+
+snippet newtest "setup a new shell test file."
+#! /usr/bin/env sh
+
+### ${1:shell_script}_spec.sh ###
+
+${2://tests}
+
+### Call and Run all Tests ###
+. "../shunit2-2.1.6/src/shunit2"
+endsnippet

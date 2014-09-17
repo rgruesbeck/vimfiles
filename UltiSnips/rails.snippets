@@ -1,0 +1,263 @@
+#--------------------Test---------------------
+snippet wip "add pending for work in progress"
+pending 'Work In Progress: ${1:todo}'
+endsnippet
+
+snippet describe
+describe ${1:class} do
+  describe '${2:method (prefix with . for class methods and # for instance methods)}' do
+    it '${3:does}' do
+      pending 'todo: $3'
+    end
+  end
+end
+endsnippet
+
+snippet des
+describe '${2:method}' do
+  it '${1:does}' do
+    pending 'todo: $1'
+  end
+end
+endsnippet
+
+snippet it "it multiline block"
+it '${1:does}' do
+  pending 'todo: $1'
+end
+endsnippet
+
+snippet its "it inline block"
+it { should ${1:matcher}(${2:attr}) }
+endsnippet
+
+snippet fg
+FactoryGirl.${1:create}(:${2:class_name}, ${3:key: "value"})
+endsnippet
+
+snippet sub
+subject.${1:attribute} = ${2:value}
+endsnippet
+
+snippet con
+context '${2:method}' do
+  it '${1:does}' do
+    pending 'todo: $1'
+  end
+end
+endsnippet
+
+snippet ex
+expect(${1:thingy}).to ${2:somthing}
+endsnippet
+
+snippet cr
+${1:user} = create(:$1)
+endsnippet
+
+snippet rend
+render
+
+expect(rendered).to have_${1:content}
+endsnippet
+
+snippet testurl "test for valid urls smart"
+it 'allows proper urls for $1' do
+  should allow_value('http://foo.com', 'https://bar.com/baz', 'bar.com', 'www.baz.com').
+    for(:${1:attr}).
+    on(:${2:create})
+end
+
+it 'does not allow improper urls for $1' do
+  should_not allow_value('slkdja', 'https://bar', 'www.baz').
+    for(:$1).
+    on(:$2)
+end
+endsnippet
+
+snippet testurl "test for valid urls strict"
+it { should allow_value('http://foo.com', 'http://bar.com/baz').for(:${1:url}) }
+it { should_not allow_value('asdfjkl').for(:$1) }
+endsnippet
+
+snippet scen "scenario"
+scenario '${1:scenario description}' do
+  ${4:pending '$1'}
+  expect(page).to have_${2:content} '${3:desired_$2}'
+end
+endsnippet
+
+snippet with "within do block"
+within("${1:selector}") do
+  ${2:#todo}
+end
+endsnippet
+
+snippet vis "visit"
+visit '/$1'
+endsnippet
+
+snippet fil "fill in form"
+fill_in '${1:label}', with: '${2:input}'
+endsnippet
+
+snippet clk "Click on..."
+click_${1:link} '$${2:link_text}'
+endsnippet
+
+snippet feature "new feature"
+feature "${1:feature_name}" do
+  ${2:scenario}
+end
+endsnippet
+
+#--------------------Code---------------------
+global !p
+def complete(t, opts):
+  if t:
+    opts = [ m[len(t):] for m in opts if m.startswith(t) ]
+  if len(opts) == 1:
+    return opts[0]
+  return "\n  (" + ' | '.join(opts) + ')'
+
+def asc_opts(rel):
+  opts = ['belongs_to', 'has_one', 'has_many', 'has_and_belongs_to_many']
+  opt = [ r for r in opts if r.startswith(rel) ][0]
+  if opt == 'belongs_to':
+    return ['autosave' 'class_name' 'counter_cache' 'dependent', 'foreign_key', 'inverse_of', 'polymorphic', 'touch', 'validate']
+  if opt == 'has_one':
+    return ['as', 'autosave', 'class_name', 'dependent', 'foreign_key', 'inverse_of', 'primary_key', 'source', 'source_type', 'through', 'validate']
+  if opt == 'has_many':
+    return ['as', 'autosave', 'class_name', 'dependent', 'foreign_key', 'inverse_of', 'primary_key', 'source', 'source_type', 'through', 'validate']
+  if opt == 'has_and_belongs_to_many':
+    return ['association_foreign_key', 'autosave', 'class_name', 'foreign_key', 'join_table', 'validate', 'readonly']
+  return ['option']
+
+def val_opts(opts):
+  return ['acceptance', 'confirmation', 'exclusion', 'format', 'inclusion', 'length', 'numericality', 'presence', 'absence', 'uniqueness']
+
+def caps(model_name):
+  return model_name.capitalize()
+endglobal
+
+snippet scope "scope: lambda"
+scope :${1:active}, -> { ${2:where}(${3:state}: '${4:active}') }
+endsnippet
+
+snippet rel "Active Record Associations" b
+$1`!p snip.rv=complete(t[1], ['belongs_to', 'has_one', 'has_many', 'has_and_belongs_to_many'])` :${2:model}, $3`!p snip.rv=complete(t[3], asc_opts(t[1]))`: :${4:true}
+endsnippet
+
+snippet val "Active Record Validations" b
+${1:validates} :${2:model}, $3`!p snip.rv=complete(t[3], val_opts(t[3]))`: ${4:true}
+endsnippet
+
+snippet json "json object"
+{ 
+  ${1:key}: ${2:"value"},
+  ${3:key}: ${4:"value"}
+}
+endsnippet
+
+snippet sp "strong params"
+def $1_params
+  params.require(:${1:model}).permit(:${2:attribute})
+end
+endsnippet
+
+snippet qcrud "quick sample crud code"
+#--quick crud for ${1:model}--
+def index
+  @$1s = `!p snip.rv=caps(t[1])`.all
+end
+
+def show
+  @$1 = `!p snip.rv=caps(t[1])`.find(params[:id])
+end
+
+def new
+  @$1 = `!p snip.rv=caps(t[1])`.new
+end
+
+def create
+  if @$1 = `!p snip.rv=caps(t[1])`.create($1_params)
+    redirect_to $1s_path
+  else
+    render :new
+  end
+end
+
+def update
+  @$1 = `!p snip.rv=caps(t[1])`.find(params[:id])
+ 
+  if @$1.update($1_params)
+    redirect_to @$1
+  else
+    render :edit
+  end
+end
+
+def destroy
+  @$1 = `!p snip.rv=caps(t[1])`.find(params[:id])
+  @$1.destroy
+
+  redirect_to $1s_path
+end
+
+protected
+
+def $1_params
+  params.require(:$1).permit(:${2:attributes})
+end
+endsnippet
+
+snippet index "index action"
+def index
+  @${1:model}s = `!p snip.rv=caps(t[1])`.all
+end
+endsnippet
+
+snippet show "show action"
+def show
+  @${1:model} = `!p snip.rv=caps(t[1])`.find(params[:id])
+end
+endsnippet
+
+snippet create "create action"
+def new
+  @$1 = `!p snip.rv=caps(t[1])`.new
+end
+
+def create
+  if @${1:model} = `!p snip.rv=caps(t[1])`.create($1_params)
+    redirect_to $1s_path
+  else
+    render :new
+  end
+end
+endsnippet
+
+snippet update "update action"
+def update
+  @${1:model} = `!p snip.rv=caps(t[1])`.find(params[:id])
+ 
+  if @$1.update($1_params)
+    redirect_to @$1
+  else
+    render :edit
+  end
+end
+endsnippet
+
+snippet destroy "destroy action"
+def destroy
+  @${1:model}= `!p snip.rv=caps(t[1])`.find(params[:id])
+  @$1.destroy
+
+  redirect_to $1s_path
+end
+endsnippet
+
+snippet regex "regex : valid email"
+/.+@.+\..+/i
+endsnippet
