@@ -300,10 +300,4 @@ autocmd BufReadPost fugitive://*
 "setup ctrlp
 set runtimepath^=~/.vim/bundle/ctrlp.vim
 
-"set solarized colors
-let g:solarized_termcolors=256
-let g:solarized_termtrans=1
-syntax enable
-set background=dark
-colorscheme solarized
-"call togglebg#map("tt")
+set runtimepath+=~/.vim/bundle/jshint2.vim/
