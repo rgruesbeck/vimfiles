@@ -32,7 +32,7 @@ if v:version >= 703
     set undodir=~/.vim/undofiles
     set undofile
 
-    set colorcolumn=+1 "mark the ideal max text width
+    "set colorcolumn=+1 "mark the ideal max text width
 endif
 
 "default indent settings
@@ -70,6 +70,7 @@ set ttymouse=xterm2
 
 "tell the term has 256 colors
 set t_Co=256
+let g:solarized_termcolors=256
 
 "hide buffers when not displayed
 set hidden
@@ -300,6 +301,9 @@ autocmd BufReadPost fugitive://*
 
 "setup ctrlp
 set runtimepath^=~/.vim/bundle/ctrlp.vim
-
 set runtimepath+=~/.vim/bundle/jshint2.vim/
 
+"set colorscheme
+"syntax enable
+"set background=light
+"colorscheme solarized
