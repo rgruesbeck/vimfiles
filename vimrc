@@ -1,3 +1,4 @@
+scriptencoding utf-8
 "Use Vim settings, rather then Vi settings (much better!).
 "This must be first, because it changes other options as a side effect.
 set nocompatible
@@ -301,3 +302,4 @@ autocmd BufReadPost fugitive://*
 set runtimepath^=~/.vim/bundle/ctrlp.vim
 
 set runtimepath+=~/.vim/bundle/jshint2.vim/
+
