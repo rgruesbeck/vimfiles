@@ -61,33 +61,27 @@ var EventEmitter = events.EventEmitter;
 var ${1:thing} = new EventEmitter();
 endsnippet
 
-snippet cb " callback function"
-function(${1:err}, ${2:data}){
-  ${3://something}
-}
-endsnippet
-
-snippet f "function anonymous"
-function(${1:args}){
-  ${2://something}
+snippet f "function anonymous" i
+function(${1:arg}){
+  $2
 }
 endsnippet
 
 snippet f "function named"
 function ${1:name}(${2:args}){
-  ${3://something}
+  $3
 };
 endsnippet
 
 snippet f "function named with var"
 var ${1:name} = function(${2:args}){
-  ${3://something}
+  $3
 }
 endsnippet
 
 snippet f "function self-invoking"
 (function(${1:args}){
-  ${2://something}
+  $2
 })()${3:;}
 endsnippet
 
@@ -174,9 +168,9 @@ snippet l "listen"
 ${1:app}.listen(${2:8080});
 endsnippet
 
-snippet if "single if"
-if (${1:err})
-  ${2:throw err;}
+snippet if "early return"
+if (${1:err}) return ${2:cb}($1);
+$3
 endsnippet
 
 snippet if "if else"

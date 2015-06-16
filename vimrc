@@ -303,7 +303,16 @@ autocmd BufReadPost fugitive://*
 set runtimepath^=~/.vim/bundle/ctrlp.vim
 set runtimepath+=~/.vim/bundle/jshint2.vim/
 
+"set ctrlp ignores
+let g:ctrlp_custom_ignore = {
+  \ 'dir':  '\v[\/](.git|tmp|node_modules)',
+  \ 'file': '\v\.(spw|so)$',
+  \ }
+
+"set context colors
+let g:js_context_colors = [ 0, 2, 3, 4, 5, 6 ]
+
 "set colorscheme
-"syntax enable
-"set background=light
-"colorscheme solarized
+syntax enable
+set background=light
+colorscheme solarized
